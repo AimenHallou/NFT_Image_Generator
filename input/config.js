@@ -3,164 +3,118 @@ const dir = __dirname;
 const width = 1000;
 const height = 1000;
 console.log(__dirname);
+const description = "This NFT was created with generative code";
+const baseImageUri = "";
+const startEditionFrom = 1;
+const endEditionAt = 10;
+const editionSize = 10;
 
-//Different rarity which can be selected from here
-const rarity = [{
-    key: "",
-    val: "original"
+//How many of each rarity you get in the end
+const rarityWeights = [
+  {
+    value: "super_rare",
+    from: 1,
+    to: 1,
   },
   {
-    key: "_r",
-    val: "rare"
+    value: "rare",
+    from: 2,
+    to: 5,
   },
   {
-    key: "_sr",
-    val: "super rare"
-  },
-  {
-    key: "_s",
-    val: "only one"
+    value: "original",
+    from: 5,
+    to: editionSize,
   },
 ];
 
-//Custom rarity to each png file
-const addRarity = _str => {
-  let itemRarity;
-
-  rarity.forEach((r) => {
-    if (_str.includes(r.key)) {
-      itemRarity = r.val;
-    }
-  });
-  return itemRarity;
-};
 
 
 //Remove .png and the rarity from it 
 const cleanName = _str => {
   let name = _str.slice(0, -4);
-  rarity.forEach((r) => {
-    name = name.replace(r.key, "");
-  });
   return name;
 };
 
 //Each element has a id, name, original file name and rarity
-const getElements = path => {
+const getElements = (path) => {
   return fs
     .readdirSync(path)
     .filter((item) => !/(^|\/)\.[^\/\.]/g.test(item))
-    .map((i, index) => {
+    .map((i) => {
       return {
-        id: index + 1,
         name: cleanName(i),
-        fileName: i,
-        rarity: addRarity(i)
+        path: `${path}/${i}`,
       };
     });
 };
 //Each layer on the project
-const layers = [{
-    location: `${dir}/background/`,
-    elements: getElements(`${dir}/background/`),
-    position: {
-      x: 0,
-      y: 0
+const layers = [
+  {
+    elements: {
+      original: getElements(`${dir}/ball/original`),
+      rare: getElements(`${dir}/ball/rare`),
+      super_rare: getElements(`${dir}/ball/super_rare`),
     },
-    size: {
-      width: width,
-      height: height
-    }
+    position: { x: 0, y: 0 },
+    size: { width: width, height: height },
   },
   {
-    location: `${dir}/Eyeball/`,
-    elements: getElements(`${dir}/Eyeball/`),
-    position: {
-      x: 0,
-      y: 0
+    elements: {
+      original: getElements(`${dir}/eye color/original`),
+      rare: getElements(`${dir}/eye color/rare`),
+      super_rare: getElements(`${dir}/eye color/super_rare`),
     },
-    size: {
-      width: width,
-      height: height
-    }
+    position: { x: 0, y: 0 },
+    size: { width: width, height: height },
   },
   {
-    location: `${dir}/Eye Color/`,
-    elements: getElements(`${dir}/Eye Color/`),
-    position: {
-      x: 0,
-      y: 0
+    elements: {
+      original: getElements(`${dir}/iris/original`),
+      rare: getElements(`${dir}/iris/rare`),
+      super_rare: getElements(`${dir}/iris/super_rare`),
     },
-    size: {
-      width: width,
-      height: height
-    }
+    position: { x: 0, y: 0 },
+    size: { width: width, height: height },
   },
   {
-    location: `${dir}/Iris/`,
-    elements: getElements(`${dir}/Iris/`),
-    position: {
-      x: 0,
-      y: 0
+    elements: {
+      original: getElements(`${dir}/shine/original`),
+      rare: getElements(`${dir}/shine/rare`),
+      super_rare: getElements(`${dir}/shine/super_rare`),
     },
-    size: {
-      width: width,
-      height: height
-    }
+    position: { x: 0, y: 0 },
+    size: { width: width, height: height },
   },
   {
-    location: `${dir}/Shine/`,
-    elements: getElements(`${dir}/Shine/`),
-    position: {
-      x: 0,
-      y: 0
+    elements: {
+      original: getElements(`${dir}/bottom lid/original`),
+      rare: getElements(`${dir}/bottom lid/rare`),
+      super_rare: getElements(`${dir}/bottom lid/super_rare`),
     },
-    size: {
-      width: width,
-      height: height
-    }
+    position: { x: 0, y: 0 },
+    size: { width: width, height: height },
   },
   {
-    location: `${dir}/Bottom lid/`,
-    elements: getElements(`${dir}/Bottom lid/`),
-    position: {
-      x: 0,
-      y: 0
+    elements: {
+      original: getElements(`${dir}/top lid/original`),
+      rare: getElements(`${dir}/top lid/rare`),
+      super_rare: getElements(`${dir}/top lid/super_rare`),
     },
-    size: {
-      width: width,
-      height: height
-    }
-  },
-  {
-    location: `${dir}/Top lid/`,
-    elements: getElements(`${dir}/Top lid/`),
-    position: {
-      x: 0,
-      y: 0
-    },
-    size: {
-      width: width,
-      height: height
-    }
-  },
-  {
-    location: `${dir}/Goo/`,
-    elements: getElements(`${dir}/Goo/`),
-    position: {
-      x: 0,
-      y: 0
-    },
-    size: {
-      width: width,
-      height: height
-    }
+    position: { x: 0, y: 0 },
+    size: { width: width, height: height },
   },
 ];
 
-//Bring layers, width and height to the index file
+//Bring varables to the index file
 module.exports = {
   layers,
   width,
-  height
-}
+  height,
+  description,
+  baseImageUri,
+  editionSize,
+  startEditionFrom,
+  endEditionAt,
+  rarityWeights,
+};
